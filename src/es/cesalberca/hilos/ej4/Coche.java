@@ -19,26 +19,26 @@ public class Coche extends Thread {
 
     @Override
     public void run() {
-//        int iteracion = 0;
-
         while (!aparcado && semaforo.availablePermits() != 0) {
             try {
                 System.out.println(String.format("Coche %s buscando plaza de las %s plazas libres", this.id, semaforo.availablePermits()));
 
                 Thread.sleep(1000 );
-
                 // Tras buscar un poco encuentra plaza
-                this.aparcado = true;
-                semaforo.acquire();
-
-                System.out.println(String.format("Coche %s conseguido una plaza, Plazas restantes: %s", this.id, semaforo.availablePermits()));
-                // Determinar qué plaza ha conseguido
+                boolean esPlazaConseguida = Math.random() >= 0.5;
+                if (esPlazaConseguida) {
+                    semaforo.acquire();
+                    this.aparcado = true;
+                    System.out.println(String.format("Coche %s conseguido una plaza de las %s plazas restantes", this.id, semaforo.availablePermits()));
+                } else {
+                    System.out.println(String.format("Plaza no conseguida en esta iteración para el coche %s", this.id));
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            iteracion++;
-//            System.out.println(String.format("Iteración número: %s", iteracion));
         }
-        System.out.println(String.format("No hay plazas libres para coche %s, saliendo del aparcamiento...", this.id));
+
+        if (!aparcado)
+            System.out.println(String.format("No hay plazas libres para coche %s, saliendo del aparcamiento...", this.id));
     }
 }

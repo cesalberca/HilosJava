@@ -11,7 +11,6 @@ public class ParkingGestor {
 
     private int maxPlazas;
     private int maxCoches;
-    private int cochesEnParking;
 
     private static Semaphore semaforo;
 
@@ -19,7 +18,6 @@ public class ParkingGestor {
         this.maxPlazas = maxPlazas;
         this.maxCoches = maxCoches;
 
-        this.cochesEnParking = 0;
         ParkingGestor.plazasLibres = maxPlazas;
 
         semaforo = new Semaphore(this.maxPlazas);
@@ -31,19 +29,10 @@ public class ParkingGestor {
             coches.add(new Coche(String.valueOf(i), semaforo));
         }
 
+        System.out.println("Comenzando la ejecución del programa");
+
         // Iniciamos los hilos
         coches.forEach(Coche::start);
-    }
 
-    public static int getPlazasLibres() {
-        return plazasLibres;
-    }
-
-    public static void sumarPlazasLibres() {
-        ParkingGestor.plazasLibres++;
-    }
-
-    public static void restarPlazasLibres() {
-        ParkingGestor.plazasLibres--;
     }
 }
