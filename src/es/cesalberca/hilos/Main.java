@@ -1,10 +1,9 @@
 package es.cesalberca.hilos;
 
-import es.cesalberca.hilos.ej1.Relevos;
+import es.cesalberca.hilos.ej1.Ej1Gestor;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello");
-        Relevos relevos = new Relevos();
+        Ej1Gestor ej1Gestor = new Ej1Gestor(4);
     }
 }

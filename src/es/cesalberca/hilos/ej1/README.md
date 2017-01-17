@@ -1,6 +1,6 @@
 # EJERCICIO 1
 
-Escribe una clase llamada Relevos que simule una carrera de relevos de la siguiente forma:
+Escribe una clase llamada Relevos que simule una carrera de relevo de la siguiente forma:
 
 Cree 4 hilos, que se quedarán a la espera de recibir alguna señal para comenzar a correr.
 
