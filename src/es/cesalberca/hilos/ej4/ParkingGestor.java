@@ -12,7 +12,7 @@ public class ParkingGestor {
     private int maxPlazas;
     private int maxCoches;
 
-    private static Semaphore semaforo;
+    public static Semaphore semaforo;
 
     public ParkingGestor(int maxPlazas, int maxCoches) {
         this.maxPlazas = maxPlazas;
@@ -26,7 +26,7 @@ public class ParkingGestor {
 
         // Añadimos a nuestro arraylist todos los coches, le pasamos por referencia el semáforo
         for (int i = 0; i < maxCoches; i++) {
-            coches.add(new Coche(String.valueOf(i), semaforo));
+            coches.add(new Coche(String.valueOf(i)));
         }
 
         System.out.println("Comenzando la ejecución del programa");
@@ -45,7 +45,7 @@ public class ParkingGestor {
 
         System.out.println("Fin de la ejecución del progama");
 
-        for (Coche coche : Coche.getCochesAparcados()) {
+        for (Coche coche : Coche.getCoches()) {
             System.out.println(coche);
         }
 
