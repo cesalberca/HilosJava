@@ -12,7 +12,7 @@ public class ParkingGestor {
     private int maxPlazas;
     private int maxCoches;
 
-    public Semaphore semaforo;
+    private Semaphore semaforo;
 
     public ParkingGestor(int maxPlazas, int maxCoches) {
         this.maxPlazas = maxPlazas;
@@ -57,6 +57,7 @@ public class ParkingGestor {
         }
 
         System.out.println(String.format("Total coches: %d", Coche.getCochesAparcados().size() + Coche.getCochesNoAparcados().size()));
+        System.out.println(String.format("Plazas libres: %d", semaforo.availablePermits()));
 
     }
 }

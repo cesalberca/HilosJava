@@ -25,6 +25,7 @@ public class Coche extends Thread {
     @Override
     public void run() {
         boolean plazaConseguida;
+        boolean decideAbandonarAparcamiento;
         int maxIteraciones = 10;
         int iteracionActual = 0;
 
@@ -49,11 +50,19 @@ public class Coche extends Thread {
                         System.out.println(String.format("Plaza no conseguida en esta iteración para el coche %s", this.id));
                     }
                 } else {
-                    this.semaforo.release();
-                    this.aparcado = false;
-                    Coche.cochesAparcados.remove(this);
-                    Coche.cochesNoAparcados.add(this);
-                    System.out.println(String.format("Coche %s saliendo del aparcamiento...", this.id));
+                    // El coche a veces decide salir del aparcamiento. Hay un 25% de posibilidades de que esto ocurra.
+                    decideAbandonarAparcamiento = ThreadLocalRandom.current().nextDouble(1) >= 0.25;
+
+                    if (decideAbandonarAparcamiento) {
+                        this.aparcado = false;
+                        Coche.cochesAparcados.remove(this);
+                        Coche.cochesNoAparcados.add(this);
+                        this.semaforo.release();
+                        System.out.println(String.format("Coche %s saliendo del aparcamiento...", this.id));
+                    } else {
+                        // Pasa un tiempo hasta que vuelve a decidir
+//                        Thread.sleep(1000);
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
