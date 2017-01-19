@@ -12,40 +12,41 @@ public class Coche extends Thread {
     private String id;
     private boolean aparcado;
     private Semaphore semaforo;
+    private static int MAX_ITERACIONES = 10;
 
-    private static ArrayList<Coche> cochesAparcados = new ArrayList<>();
-    private static ArrayList<Coche> cochesNoAparcados = new ArrayList<>();
+    private static ArrayList<Coche> coches = new ArrayList<>();
 
     public Coche(String id, Semaphore semaforo) {
         this.id = id;
         this.semaforo = semaforo;
         this.aparcado = false;
+
+        coches.add(this);
     }
 
     @Override
     public void run() {
         boolean plazaConseguida;
         boolean decideAbandonarAparcamiento;
-        int maxIteraciones = 10;
+
         int iteracionActual = 0;
 
         // El proceso se debe repetir n veces
-        while (iteracionActual < maxIteraciones) {
+        while (iteracionActual < MAX_ITERACIONES) {
             try {
                 // Tenemos que comprobar que este coche no está aparcado ya. Un coche no se puede aparcar si ya está aparcado
                 // También tenemos que comprobar que hay plazas disponibles.
-                if (!this.aparcado && this.semaforo.availablePermits() != 0) {
+                if (!this.aparcado) {
                     System.out.println(String.format("Coche %s buscando plaza de las %s plazas libres", this.id, this.semaforo.availablePermits()));
                     // Hay un 50% de posibilidades de conseguir plaza
                     plazaConseguida = ThreadLocalRandom.current().nextDouble(1) >= 0.5;
-                    // Debemos comprobar otra vez que hay plazas disponibles, ya que otro coche se nos puede haber adelantado. Cosas de hilos.
-                    if (plazaConseguida && this.semaforo.availablePermits() != 0) {
-                        this.aparcado = true;
-                        Coche.cochesAparcados.add(this);
-                        Coche.cochesNoAparcados.remove(this);
-                        this.semaforo.acquire();
-                        System.out.println(String.format("Coche %s conseguida una plaza de las %d plazas disponibles", this.id, this.semaforo.availablePermits()));
-                        // Aquí este coche debería parar su hilo
+                    if (plazaConseguida) {
+                        // Debemos comprobar que hay plazas disponibles, ya que otro coche se nos puede haber adelantado. Cosas de hilos.
+                        if (this.semaforo.availablePermits() != 0) {
+                            this.semaforo.acquire();
+                            this.aparcado = true;
+                            System.out.println(String.format("Coche %s conseguida una plaza de las %d plazas disponibles", this.id, this.semaforo.availablePermits()));
+                        }
                     } else {
                         System.out.println(String.format("Plaza no conseguida en esta iteración para el coche %s", this.id));
                     }
@@ -54,14 +55,9 @@ public class Coche extends Thread {
                     decideAbandonarAparcamiento = ThreadLocalRandom.current().nextDouble(1) >= 0.25;
 
                     if (decideAbandonarAparcamiento) {
-                        this.aparcado = false;
-                        Coche.cochesAparcados.remove(this);
-                        Coche.cochesNoAparcados.add(this);
                         this.semaforo.release();
+                        this.aparcado = false;
                         System.out.println(String.format("Coche %s saliendo del aparcamiento...", this.id));
-                    } else {
-                        // Pasa un tiempo hasta que vuelve a decidir
-//                        Thread.sleep(1000);
                     }
                 }
             } catch (InterruptedException e) {
@@ -72,12 +68,12 @@ public class Coche extends Thread {
         }
     }
 
-    public static ArrayList<Coche> getCochesAparcados() {
-        return cochesAparcados;
+    public static ArrayList<Coche> getCoches() {
+        return coches;
     }
 
-    public static ArrayList<Coche> getCochesNoAparcados() {
-        return cochesNoAparcados;
+    public boolean isAparcado() {
+        return aparcado;
     }
 
     @Override

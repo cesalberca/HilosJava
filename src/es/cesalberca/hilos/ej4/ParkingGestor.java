@@ -1,14 +1,14 @@
 package es.cesalberca.hilos.ej4;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.stream.Collectors;
 
 /**
  * Created by Cesar
  */
 public class ParkingGestor {
-    private static int plazasLibres;
-
     private int maxPlazas;
     private int maxCoches;
 
@@ -17,8 +17,6 @@ public class ParkingGestor {
     public ParkingGestor(int maxPlazas, int maxCoches) {
         this.maxPlazas = maxPlazas;
         this.maxCoches = maxCoches;
-
-        ParkingGestor.plazasLibres = maxPlazas;
 
         semaforo = new Semaphore(this.maxPlazas);
 
@@ -37,7 +35,6 @@ public class ParkingGestor {
         // Esperamos a la ejecución los hilos
         coches.forEach((coche -> {
             try {
-//                coche.start();
                 coche.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -45,19 +42,28 @@ public class ParkingGestor {
         }));
 
         System.out.println("Fin de la ejecución del progama");
+        List<Coche> todosCoches = Coche.getCoches();
 
-        System.out.println("Coches aparcados:");
-        for (Coche coche : Coche.getCochesAparcados()) {
-            System.out.println(coche);
-        }
+        System.out.println("Todos los coches:");
+        todosCoches.forEach(System.out::println);
+
+        List<Coche> cochesAparcados = todosCoches
+                .stream()
+                .filter(Coche::isAparcado)
+                .collect(Collectors.toList());
+
+        System.out.println("Coche aparcados:");
+        cochesAparcados.forEach(System.out::println);
+
+        List<Coche> cochesNoAparcados = todosCoches
+                .stream()
+                .filter(coche -> !coche.isAparcado())
+                .collect(Collectors.toList());
 
         System.out.println("Coches no aparcados:");
-        for (Coche coche : Coche.getCochesNoAparcados()) {
-            System.out.println(coche);
-        }
+        cochesNoAparcados.forEach(System.out::println);
 
-        System.out.println(String.format("Total coches: %d", Coche.getCochesAparcados().size() + Coche.getCochesNoAparcados().size()));
+        System.out.println(String.format("Total coches: %d", Coche.getCoches().size()));
         System.out.println(String.format("Plazas libres: %d", semaforo.availablePermits()));
-
     }
 }
