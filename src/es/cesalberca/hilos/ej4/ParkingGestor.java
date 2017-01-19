@@ -12,7 +12,7 @@ public class ParkingGestor {
     private int maxPlazas;
     private int maxCoches;
 
-    public static Semaphore semaforo;
+    public Semaphore semaforo;
 
     public ParkingGestor(int maxPlazas, int maxCoches) {
         this.maxPlazas = maxPlazas;
@@ -26,7 +26,7 @@ public class ParkingGestor {
 
         // Añadimos a nuestro arraylist todos los coches, le pasamos por referencia el semáforo
         for (int i = 0; i < maxCoches; i++) {
-            coches.add(new Coche(String.valueOf(i)));
+            coches.add(new Coche(String.valueOf(i), semaforo));
         }
 
         System.out.println("Comenzando la ejecución del programa");
@@ -37,6 +37,7 @@ public class ParkingGestor {
         // Esperamos a la ejecución los hilos
         coches.forEach((coche -> {
             try {
+//                coche.start();
                 coche.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -45,9 +46,17 @@ public class ParkingGestor {
 
         System.out.println("Fin de la ejecución del progama");
 
-        for (Coche coche : Coche.getCoches()) {
+        System.out.println("Coches aparcados:");
+        for (Coche coche : Coche.getCochesAparcados()) {
             System.out.println(coche);
         }
+
+        System.out.println("Coches no aparcados:");
+        for (Coche coche : Coche.getCochesNoAparcados()) {
+            System.out.println(coche);
+        }
+
+        System.out.println(String.format("Total coches: %d", Coche.getCochesAparcados().size() + Coche.getCochesNoAparcados().size()));
 
     }
 }
