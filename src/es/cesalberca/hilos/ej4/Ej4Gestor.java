@@ -5,6 +5,6 @@ package es.cesalberca.hilos.ej4;
  */
 public class Ej4Gestor {
     public Ej4Gestor() {
-        ParkingGestor parkingGestor = new ParkingGestor(2, 4);
+        ParkingGestor parkingGestor = new ParkingGestor(5, 10);
     }
 }

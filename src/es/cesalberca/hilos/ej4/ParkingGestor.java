@@ -24,15 +24,30 @@ public class ParkingGestor {
 
         ArrayList<Coche> coches = new ArrayList<>();
 
-        // Añadimos a nuestro arraylist todos los coches
+        // Añadimos a nuestro arraylist todos los coches, le pasamos por referencia el semáforo
         for (int i = 0; i < maxCoches; i++) {
             coches.add(new Coche(String.valueOf(i), semaforo));
         }
 
         System.out.println("Comenzando la ejecución del programa");
 
-        // Iniciamos los hilos
-        coches.forEach(Coche::start);
+        // Iniciamos la ejecución de los hilos
+        coches.forEach(Thread::start);
+
+        // Esperamos a la ejecución los hilos
+        coches.forEach((coche -> {
+            try {
+                coche.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        System.out.println("Fin de la ejecución del progama");
+
+        for (Coche coche : Coche.getCochesAparcados()) {
+            System.out.println(coche);
+        }
 
     }
 }
