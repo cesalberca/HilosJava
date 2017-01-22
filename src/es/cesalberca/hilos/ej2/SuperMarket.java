@@ -1,14 +1,11 @@
 package es.cesalberca.hilos.ej2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Cesar
  */
 public class SuperMarket {
-    private Cliente[] clientes;
-    private Caja[] cajas;
+    private static Cliente[] clientes;
+    private static Caja[] cajas;
 
     private int numeroCajas;
     private int numeroClientes;
@@ -17,8 +14,8 @@ public class SuperMarket {
         this.numeroCajas = numeroCajas;
         this.numeroClientes = numeroClientes;
 
-        clientes = new Cliente[numeroClientes];
-        cajas = new Caja[numeroCajas];
+        clientes = new Cliente[this.numeroClientes];
+        cajas = new Caja[this.numeroCajas];
 
         iniciarCajas();
         iniciarClientes();
@@ -26,7 +23,7 @@ public class SuperMarket {
 
     private void iniciarCajas() {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i] = new Caja(5);
+            cajas[i] = new Caja();
         }
     }
 
@@ -39,6 +36,15 @@ public class SuperMarket {
             t = new Thread(cliente);
             clientes[i] = cliente;
             t.start();
+        }
+    }
+
+    public static void asignarClienteACaja(Cliente cliente) {
+        try {
+            cajas[0].addCliente(cliente);
+            System.out.println(cajas[0]);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
