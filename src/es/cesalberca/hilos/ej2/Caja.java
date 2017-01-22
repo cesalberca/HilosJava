@@ -59,6 +59,7 @@ public class Caja {
                     .stream()
                     .map(Cliente::toString)
                     .collect(Collectors.joining(", ")) +
+                ", dineroEnCaja=" + dineroEnCaja +
                 '}';
     }
 }

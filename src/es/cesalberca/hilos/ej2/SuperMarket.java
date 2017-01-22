@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by Cesar
  */
 public class SuperMarket {
-    private static Cliente[] clientes;
+    private static Thread[] clientes;
     private static Caja[] cajas;
 
     private static int numeroCajas;
@@ -16,11 +16,12 @@ public class SuperMarket {
         SuperMarket.numeroCajas = numeroCajas;
         SuperMarket.numeroClientes = numeroClientes;
 
-        clientes = new Cliente[SuperMarket.numeroClientes];
+        clientes = new Thread[SuperMarket.numeroClientes];
         cajas = new Caja[SuperMarket.numeroCajas];
 
         iniciarCajas();
         iniciarClientes();
+        finalizarPrograma();
     }
 
     private void iniciarCajas() {
@@ -36,7 +37,7 @@ public class SuperMarket {
         for (int i = 0; i < SuperMarket.numeroClientes; i++) {
             cliente = new Cliente(i);
             t = new Thread(cliente);
-            clientes[i] = cliente;
+            clientes[i] = t;
             t.start();
         }
     }
@@ -50,6 +51,22 @@ public class SuperMarket {
             cajaElegida.removeCliente(cliente);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void finalizarPrograma() {
+        for (int i = 0; i < clientes.length; i++) {
+            try {
+                clientes[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Programa finalizado");
+
+        for (Caja caja : cajas) {
+            System.out.println(caja);
         }
     }
 }
