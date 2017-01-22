@@ -57,9 +57,9 @@ public class SuperMarket {
     }
 
     private void finalizarPrograma() {
-        for (int i = 0; i < clientes.length; i++) {
+        for (Thread cliente : clientes) {
             try {
-                clientes[i].join();
+                cliente.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
