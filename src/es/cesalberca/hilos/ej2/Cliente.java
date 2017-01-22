@@ -4,7 +4,7 @@ package es.cesalberca.hilos.ej2;
  * Created by César
  */
 public class Cliente implements Runnable {
-    private static int MAX_ITERACIONES = 10;
+    private static int MAX_ITERACIONES = 1;
     private int id;
 
     public Cliente(int id) {
@@ -21,7 +21,12 @@ public class Cliente implements Runnable {
         }
     }
 
+    public void pagar() {
+        System.out.println(String.format("Cliente %d está pagando su compra", this.id));
+    }
+
     private void buscarCaja() {
+        System.out.println(String.format("Cliente %d está buscando caja", this.id));
         SuperMarket.asignarClienteACaja(this);
     }
 

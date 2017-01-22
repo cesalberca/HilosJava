@@ -23,7 +23,7 @@ public class SuperMarket {
 
     private void iniciarCajas() {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i] = new Caja();
+            cajas[i] = new Caja(i);
         }
     }
 
@@ -31,7 +31,7 @@ public class SuperMarket {
         System.out.println("Iniciando clientes...");
         Cliente cliente;
         Thread t;
-        for (int i = 0; i < clientes.length; i++) {
+        for (int i = 0; i < 1; i++) {
             cliente = new Cliente(i);
             t = new Thread(cliente);
             clientes[i] = cliente;
@@ -41,8 +41,9 @@ public class SuperMarket {
 
     public static void asignarClienteACaja(Cliente cliente) {
         try {
-            cajas[0].addCliente(cliente);
-            System.out.println(cajas[0]);
+            cajas[0].addClienteACola(cliente);
+            cajas[0].cobrarSiguienteCliente();
+            cajas[0].removeCliente(cliente);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
