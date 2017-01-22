@@ -7,8 +7,8 @@ import java.util.List;
  * Created by Cesar
  */
 public class SuperMarket {
-    private List<Cliente> clientes;
-    private List<Caja> cajas;
+    private Cliente[] clientes;
+    private Caja[] cajas;
 
     private int numeroCajas;
     private int numeroClientes;
@@ -17,7 +17,28 @@ public class SuperMarket {
         this.numeroCajas = numeroCajas;
         this.numeroClientes = numeroClientes;
 
-        clientes = new ArrayList<>();
-        cajas = new ArrayList<>();
+        clientes = new Cliente[numeroClientes];
+        cajas = new Caja[numeroCajas];
+
+        iniciarCajas();
+        iniciarClientes();
+    }
+
+    private void iniciarCajas() {
+        for (int i = 0; i < cajas.length; i++) {
+            cajas[i] = new Caja(5);
+        }
+    }
+
+    private void iniciarClientes() {
+        System.out.println("Iniciando clientes...");
+        Cliente cliente;
+        Thread t;
+        for (int i = 0; i < clientes.length; i++) {
+            cliente = new Cliente(i);
+            t = new Thread(cliente);
+            clientes[i] = cliente;
+            t.start();
+        }
     }
 }
