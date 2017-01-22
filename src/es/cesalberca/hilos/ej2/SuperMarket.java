@@ -2,7 +2,6 @@ package es.cesalberca.hilos.ej2;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collector;
 
 /**
  * Created by Cesar
