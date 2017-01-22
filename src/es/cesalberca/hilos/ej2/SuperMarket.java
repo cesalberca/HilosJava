@@ -1,6 +1,8 @@
 package es.cesalberca.hilos.ej2;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collector;
 
 /**
  * Created by Cesar
@@ -68,5 +70,9 @@ public class SuperMarket {
         for (Caja caja : cajas) {
             System.out.println(caja);
         }
+
+        System.out.println(String.format("Total ganado: %d", Arrays.stream(cajas)
+                .mapToInt(Caja::getDineroEnCaja)
+                .reduce(0, Integer::sum)));
     }
 }

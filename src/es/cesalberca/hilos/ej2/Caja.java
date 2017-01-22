@@ -51,6 +51,10 @@ public class Caja {
         return id;
     }
 
+    public int getDineroEnCaja() {
+        return dineroEnCaja;
+    }
+
     @Override
     public String toString() {
         return "Caja{" +
