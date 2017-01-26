@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 //        Ej1Gestor ej1Gestor = new Ej1Gestor(4);
 //        Ej2Gestor ej2Gestor = new Ej2Gestor();
-        Ej3Gestor ej3Gestor = new Ej3Gestor();
-//        Ej4Gestor ej4Gestor = new Ej4Gestor();
+//        Ej3Gestor ej3Gestor = new Ej3Gestor();
+        Ej4Gestor ej4Gestor = new Ej4Gestor();
     }
 }
