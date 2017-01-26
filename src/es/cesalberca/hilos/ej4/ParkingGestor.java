@@ -3,28 +3,32 @@ package es.cesalberca.hilos.ej4;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
  * Created by Cesar
  */
 public class ParkingGestor {
-    private int maxPlazas;
-    private int maxCoches;
-
+    private static int maxPlazas;
     private Semaphore semaforo;
+    private static Plaza[] plazas;
 
     public ParkingGestor(int maxPlazas, int maxCoches) {
-        this.maxPlazas = maxPlazas;
-        this.maxCoches = maxCoches;
+        ParkingGestor.maxPlazas = maxPlazas;
 
-        semaforo = new Semaphore(this.maxPlazas);
+        semaforo = new Semaphore(maxPlazas);
 
         ArrayList<Coche> coches = new ArrayList<>();
+        plazas = new Plaza[maxPlazas];
 
         // Añadimos a nuestro arraylist todos los coches, le pasamos por referencia el semáforo
         for (int i = 0; i < maxCoches; i++) {
             coches.add(new Coche(String.valueOf(i), semaforo));
+        }
+
+        for (int i = 0; i < plazas.length; i++) {
+            plazas[i] = new Plaza(i, false);
         }
 
         System.out.println("Comenzando la ejecución del programa");
@@ -65,5 +69,10 @@ public class ParkingGestor {
 
         System.out.println(String.format("Total coches: %d", Coche.getCoches().size()));
         System.out.println(String.format("Plazas libres: %d", semaforo.availablePermits()));
+    }
+
+    public static synchronized void asignarCocheAPlaza(Coche coche) {
+        int plazaElegida = ThreadLocalRandom.current().nextInt(maxPlazas);
+        plazas[plazaElegida].setOcupada();
     }
 }
