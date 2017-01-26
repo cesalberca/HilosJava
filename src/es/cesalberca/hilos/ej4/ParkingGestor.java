@@ -72,7 +72,15 @@ public class ParkingGestor {
     }
 
     public static synchronized void asignarCocheAPlaza(Coche coche) {
-        int plazaElegida = ThreadLocalRandom.current().nextInt(maxPlazas);
-        plazas[plazaElegida].setOcupada();
+        int plazaAleatoria = ThreadLocalRandom.current().nextInt(maxPlazas);
+        Plaza plazaElegida = plazas[plazaAleatoria];
+        plazaElegida.setOcupadaPor(coche);
+        System.out.println(String.format("Coche %d aparcado en plaza %d", coche.getId(), plazaElegida.getId()));
+    }
+
+    public static synchronized void liberarPlaza(int idPlaza) {
+        Plaza plazaALiberar = plazas[idPlaza];
+        plazaALiberar.liberarPlaza();
+        System.out.println(String.format("Coche %d dejando plaza %d", plazaALiberar.getCoche().getId(), plazaALiberar.getId()));
     }
 }

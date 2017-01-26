@@ -3,6 +3,7 @@ package es.cesalberca.hilos.ej4;
 public class Plaza {
     private int id;
     private boolean ocupada;
+    private Coche coche;
 
     public Plaza(int id, boolean ocupada) {
         this.id = id;
@@ -17,8 +18,18 @@ public class Plaza {
         return ocupada;
     }
 
-    public void setOcupada() {
-        this.ocupada = !this.ocupada;
+    public void setOcupadaPor(Coche coche) {
+        this.ocupada = true;
+        this.coche = coche;
+    }
+
+    public void liberarPlaza() {
+        this.ocupada = false;
+        this.coche = null;
+    }
+
+    public Coche getCoche() {
+        return coche;
     }
 
     @Override
