@@ -11,7 +11,6 @@ public class Coche extends Thread {
 
     private String id;
     private boolean aparcado;
-    private int idPlaza;
     private Semaphore semaforo;
     private static int MAX_ITERACIONES = 10;
 
@@ -46,7 +45,6 @@ public class Coche extends Thread {
                         if (this.semaforo.availablePermits() != 0) {
                             this.semaforo.acquire();
                             this.aparcado = true;
-                            ParkingGestor.asignarCocheAPlaza(this);
                             System.out.println(String.format("Coche %s conseguida una plaza de las %d plazas disponibles", this.id, this.semaforo.availablePermits()));
                         }
                     } else {
@@ -59,7 +57,6 @@ public class Coche extends Thread {
                     if (decideAbandonarAparcamiento) {
                         this.semaforo.release();
                         this.aparcado = false;
-                        ParkingGestor.liberarPlaza();
                         System.out.println(String.format("Coche %s saliendo del aparcamiento...", this.id));
                     }
                 }
